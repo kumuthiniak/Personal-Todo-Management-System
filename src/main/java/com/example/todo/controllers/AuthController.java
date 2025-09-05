@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.todo.model.User;
+import com.example.todo.service.PasswordResetService;
+import com.example.todo.service.UserService;
+
 @Controller
 public class AuthController {
     
