@@ -11,7 +11,7 @@ pipeline {
         DOCKER_PASS = 'Asha@2026'
         IMAGE_NAME = "${DOCKER_USER}/kumuthini2026/kumuthini-exam-todo:todoimg"
         SONAR_HOST_URL = 'http://localhost:9000' 
-        SONAR_LOGIN = 'sqa_4259bd8980efee0a86c8fb4ce215e00e0427fc1c' // Updated project token
+        SONAR_LOGIN = 'sqa_4259bd8980efee0a86c8fb4ce215e00e0427fc1c' 
     }
 
     triggers {
