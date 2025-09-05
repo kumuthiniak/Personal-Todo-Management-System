@@ -94,39 +94,89 @@
             margin-top: 10px;
         }
         
-        /* Notification styles */
+        /* Improved Notification styles */
         .notification-container {
-            z-index: 1030;
-            max-height: 300px;
-            overflow-y: auto;
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            z-index: 1050;
+            width: 320px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
         }
-        .notification-container .alert {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        
+        .notification-container.has-notifications {
+            max-height: 300px;
+        }
+        
+        .notification-item {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            padding: 12px 16px;
+            background: white;
+            border-left: 4px solid #ffc107;
+            animation: slideIn 0.3s ease-out;
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+        }
+        
+        .notification-item.alert-danger {
+            border-left-color: #dc3545;
+        }
+        
+        .notification-item.alert-info {
+            border-left-color: #17a2b8;
+        }
+        
+        .notification-content {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+        
+        .notification-message {
+            font-size: 0.85rem;
+            margin-bottom: 0;
+            color: #6c757d;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            line-height: 1;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 8px;
         }
         
         /* Animation for new notifications */
         @keyframes slideIn {
             from {
-                transform: translateY(-10px);
+                transform: translateX(100%);
                 opacity: 0;
             }
             to {
-                transform: translateY(0);
+                transform: translateX(0);
                 opacity: 1;
             }
-        }
-        .alert.show {
-            animation: slideIn 0.3s ease-out;
         }
         
         /* Make notifications less intrusive on mobile */
         @media (max-width: 768px) {
             .notification-container {
-                max-height: 200px;
-            }
-            .notification-container .alert {
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
+                left: 20px;
+                right: 20px;
+                width: auto;
             }
         }
         
@@ -141,16 +191,9 @@
     </style>
 </head>
 <body>
-    <!-- Notification Container -->
-    <div class="notification-container fixed-top mt-5 pt-1 no-print">
-        <div class="container">
-            <div class="alert alert-warning alert-dismissible fade show mb-2" role="alert" id="pendingAlert">
-                <strong><span id="pendingCount">0</span> pending todos</strong> 
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        </div>
+    <!-- Improved Notification Container -->
+    <div class="notification-container no-print" id="notificationContainer">
+        <!-- Notifications will be dynamically added here -->
     </div>
 
     <!-- Navigation Bar -->
@@ -365,7 +408,7 @@
         // Sample data for demonstration
         let todos = [
             { id: 1, todoItem: "Complete project proposal", priority: "High", category: "Work", dueDate: "2023-12-15", completed: "No", notes: "Send to manager for review" },
-                  ];
+           ];
         
         let nextId = 6;
         
@@ -481,7 +524,7 @@
             const status = document.getElementById('status').value;
             
             if (!todoItem) {
-                alert('Todo item is required!');
+                showNotification('Error', 'Todo item is required!', 'danger');
                 return;
             }
             
@@ -499,7 +542,7 @@
             renderTodos();
             
             // Show success message
-            showAlert('success', 'Todo added successfully!');
+            showNotification('Success', 'Todo added successfully!', 'success');
             
             // Close modal
             $('#addTodoModal').modal('hide');
@@ -515,7 +558,7 @@
                 todo.completed = todo.completed === 'Yes' ? 'No' : 'Yes';
                 renderTodos();
                 
-                showAlert('success', `Todo marked as ${todo.completed === 'Yes' ? 'completed' : 'pending'}`);
+                showNotification('Status Updated', `Todo marked as ${todo.completed === 'Yes' ? 'completed' : 'pending'}`, 'info');
             }
         }
         
@@ -525,7 +568,7 @@
                 todos = todos.filter(t => t.id !== id);
                 renderTodos();
                 
-                showAlert('success', 'Todo deleted successfully!');
+                showNotification('Deleted', 'Todo deleted successfully!', 'info');
             }
         }
         
@@ -579,17 +622,6 @@
             document.getElementById('overdueFilter').checked = false;
             
             filterTodos();
-        }
-        
-        // Show alert
-        function showAlert(type, message) {
-            const alert = type === 'success' ? document.getElementById('successAlert') : document.getElementById('errorAlert');
-            alert.querySelector('.alert-message').textContent = message;
-            alert.style.display = 'block';
-            
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 3000);
         }
         
         // Update the print date
@@ -647,32 +679,50 @@
             }
         }
         
-        // Notification functions
-        function showNotification(message, type = 'info') {
+        // Improved Notification function
+        function showNotification(title, message, type = 'info') {
             // Create notification element
             const notification = document.createElement('div');
-            notification.className = `alert alert-${type} alert-dismissible fade show mb-2`;
+            notification.className = `notification-item alert-${type}`;
             notification.innerHTML = `
-                ${message}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <p class="notification-message">${message}</p>
+                </div>
+                <button type="button" class="notification-close" onclick="this.parentElement.remove(); updateNotificationContainer()">
+                    &times;
                 </button>
             `;
             
             // Add to notification container
-            document.querySelector('.notification-container .container').appendChild(notification);
+            document.getElementById('notificationContainer').appendChild(notification);
+            
+            // Update container visibility
+            updateNotificationContainer();
             
             // Auto-dismiss after 5 seconds
             setTimeout(() => {
                 if (notification.parentNode) {
-                    $(notification).alert('close');
+                    notification.remove();
+                    updateNotificationContainer();
                 }
             }, 5000);
+        }
+
+        // Update notification container visibility
+        function updateNotificationContainer() {
+            const container = document.getElementById('notificationContainer');
+            if (container.children.length > 0) {
+                container.classList.add('has-notifications');
+            } else {
+                container.classList.remove('has-notifications');
+            }
         }
 
         // Check for overdue todos periodically
         function checkForOverdueTodos() {
             const now = new Date();
+            let hasOverdue = false;
             
             todos.forEach(todo => {
                 const dueDateStr = todo.dueDate;
@@ -684,6 +734,7 @@
                         const dueDate = new Date(dueDateStr);
                         if (dueDate < now) {
                             // This todo is overdue
+                            hasOverdue = true;
                             const formattedDate = dueDate.toLocaleDateString('en-US', { 
                                 month: 'short', 
                                 day: 'numeric', 
@@ -691,7 +742,8 @@
                             });
                             
                             showNotification(
-                                `<strong>Overdue:</strong> "${todoItem}" was due on ${formattedDate}`,
+                                'Overdue Todo',
+                                `"${todoItem}" was due on ${formattedDate}`,
                                 'danger'
                             );
                         }
@@ -700,24 +752,30 @@
                     }
                 }
             });
+            
+            return hasOverdue;
         }
 
         // Update pending count
         function updatePendingCount() {
             const pendingCount = todos.filter(todo => todo.completed === 'No').length;
-            document.getElementById('pendingCount').textContent = pendingCount;
             
-            // Update the badge in the card header too
-            document.getElementById('todoCount').textContent = `${pendingCount} pending, ${todos.length} total`;
+            // Show notification only if there are pending todos
+            if (pendingCount > 0) {
+                showNotification(
+                    'Pending Todos', 
+                    `You have ${pendingCount} pending todo${pendingCount !== 1 ? 's' : ''} to complete`, 
+                    'warning'
+                );
+            }
         }
 
         // Initialize notifications
         function initNotifications() {
-            // Update pending count on page load
-            updatePendingCount();
+            // Check for overdue todos on page load
+            checkForOverdueTodos();
             
             // Check for overdue todos every minute
-            checkForOverdueTodos();
             setInterval(checkForOverdueTodos, 60000);
         }
 
