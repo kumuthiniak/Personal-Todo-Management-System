@@ -1,6 +1,5 @@
 package com.example.todo.model;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,10 +16,10 @@ public class Todo {
 
     private String todoItem;
     private String completed;
-    
+
     // New fields
-    private String priority; // High, Medium, Low
-    private String category; // Work, Personal, Health, etc.
+    private String priority;  // High, Medium, Low
+    private String category;  // Work, Personal, Health, etc.
     private LocalDate dueDate;
     private String notes;
     private LocalDateTime createdAt;
@@ -37,15 +36,14 @@ public class Todo {
         this();
         this.todoItem = todoItem;
         this.completed = completed;
-        this.priority = "Medium"; // Default priority
-        this.category = "General"; // Default category
+        this.priority = "Medium";   // Default priority
+        this.category = "General";  // Default category
     }
-    
+
     // Full constructor
-    public Todo(String todoItem, String completed, String priority, String category, 
+    public Todo(String todoItem, String completed, String priority, String category,
                 LocalDate dueDate, String notes) {
         this();
-    
         this.todoItem = todoItem;
         this.completed = completed;
         this.priority = priority;
@@ -54,7 +52,7 @@ public class Todo {
         this.notes = notes;
     }
 
-    // Manual getters and setters
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -80,7 +78,7 @@ public class Todo {
         this.completed = completed;
         this.updatedAt = LocalDateTime.now();
     }
-    
+
     public String getPriority() {
         return priority;
     }
