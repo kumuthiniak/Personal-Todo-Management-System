@@ -45,6 +45,7 @@ public class Todo {
     public Todo(String todoItem, String completed, String priority, String category, 
                 LocalDate dueDate, String notes) {
         this();
+    
         this.todoItem = todoItem;
         this.completed = completed;
         this.priority = priority;
