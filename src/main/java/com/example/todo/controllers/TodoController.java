@@ -20,9 +20,6 @@ public class TodoController {
     @Autowired
     TodoRepository todoRepository; // Injecting the repository to access database operations
 
-    /**
-     * Redirects the root URL "/" to the main todos page.
-     */
     @GetMapping("/")
     public String home() {
         return "redirect:/todos";
