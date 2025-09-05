@@ -28,14 +28,8 @@ public class TodoController {
         return "redirect:/todos";
     }
 
-    /**
-     * Displays the list of todos with optional search and status filtering.
-     *
-     * @param search Optional search term to filter todos by name.
-     * @param status Optional status filter ("Yes", "No", or "all").
-     * @param model  Model object to pass data to the view.
-     * @return Thymeleaf template "todos".
-     */
+     //Displays the list of todos with optional search and status filtering.
+    
     @GetMapping("/todos")
     public String todos(@RequestParam(value = "search", required = false) String search,
                         @RequestParam(value = "status", required = false) String status,
@@ -71,18 +65,8 @@ public class TodoController {
         return "todos";
     }
 
-    /**
-     * Handles creating a new todo item.
-     *
-     * @param todoItem Description of the todo.
-     * @param status   Completion status ("Yes" or "No").
-     * @param priority Optional priority (High, Medium, Low).
-     * @param category Optional category (Work, Personal, etc.).
-     * @param dueDate  Optional due date.
-     * @param notes    Optional notes.
-     * @param model    Model object.
-     * @return Redirect to the todos page with success query param.
-     */
+     //Handles creating a new todo item.
+   
     @PostMapping("/todoNew")
     public String add(@RequestParam String todoItem,
                       @RequestParam String status,
@@ -103,26 +87,16 @@ public class TodoController {
         return "redirect:/todos?success";
     }
 
-    /**
-     * Deletes a todo by its ID.
-     *
-     * @param id    ID of the todo to delete.
-     * @param model Model object.
-     * @return Redirect to the todos page with success query param.
-     */
+     //Deletes a todo by its ID.
+    
     @PostMapping("/todoDelete/{id}")
     public String delete(@PathVariable long id, Model model) {
         todoRepository.deleteById(id);
         return "redirect:/todos?success";
     }
 
-    /**
-     * Toggles the completion status of a todo item.
-     *
-     * @param id    ID of the todo to update.
-     * @param model Model object.
-     * @return Redirect to the todos page with success query param.
-     */
+     //Toggles the completion status of a todo item.
+    
     @PostMapping("/todoUpdate/{id}")
     public String update(@PathVariable long id, Model model) {
         Todo todo = todoRepository.findById(id)
@@ -139,13 +113,8 @@ public class TodoController {
         return "redirect:/todos?success";
     }
 
-    /**
-     * Provides notification data for all views:
-     * - Count of pending todos
-     * - List of overdue todos
-     *
-     * @return Map with keys "pendingCount" and "overdueTodos".
-     */
+    //Provides notification data for all views:
+   
     @ModelAttribute("notificationData")
     public Map<String, Object> getNotificationData() {
         Map<String, Object> notificationData = new HashMap<>();
