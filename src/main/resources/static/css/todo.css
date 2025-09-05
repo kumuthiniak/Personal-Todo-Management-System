@@ -1,0 +1,218 @@
+body {
+    background-color: #f8f9fa;
+    padding-top: 70px;
+}
+#todocontainer {
+    margin-top: 20px;
+}
+.navbar-text {
+    color: white !important;
+    margin-right: 15px;
+}
+.search-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #333;
+        padding-bottom: 10px;
+    }
+    .card-header, .btn-group {
+        display: none !important;
+    }
+    .table-responsive {
+        overflow: visible !important;
+    }
+    body {
+        font-size: 12pt;
+        color: #000;
+        padding-top: 0;
+    }
+    .badge {
+        border: 1px solid #000;
+        color: #000;
+        background-color: transparent !important;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+}
+.print-header {
+    display: none;
+}
+.print-info {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
+.priority-high {
+    background-color: #ffcccc;
+}
+.priority-medium {
+    background-color: #fff9cc;
+}
+.priority-low {
+    background-color: #ccffcc;
+}
+.category-badge {
+    margin-right: 5px;
+}
+.due-date {
+    font-size: 0.85rem;
+}
+.overdue {
+    color: #dc3545;
+    font-weight: bold;
+}
+.notes-popover {
+    cursor: pointer;
+    color: #6c757d;
+}
+.additional-filters {
+    margin-top: 10px;
+}
+
+/* Notification styles */
+.notification-container {
+    z-index: 1030;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.notification-container .alert {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom notification styles */
+.custom-notifications {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1050;
+    max-width: 350px;
+}
+
+.custom-notification {
+    background-color: white;
+    border-left: 4px solid #007bff;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+    display: flex;
+    align-items: flex-start;
+}
+
+.custom-notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.custom-notification.hide {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.custom-notification.success {
+    border-left-color: #28a745;
+}
+
+.custom-notification.error {
+    border-left-color: #dc3545;
+}
+
+.custom-notification.warning {
+    border-left-color: #ffc107;
+}
+
+.custom-notification.info {
+    border-left-color: #17a2b8;
+}
+
+.notification-icon {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.notification-message {
+    font-size: 13px;
+    margin-bottom: 0;
+    color: #6c757d;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #6c757d;
+    margin-left: 10px;
+    padding: 0;
+}
+
+/* Animation for new notifications */
+@keyframes slideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.alert.show {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Make notifications less intrusive on mobile */
+@media (max-width: 768px) {
+    .notification-container {
+        max-height: 200px;
+    }
+    .notification-container .alert {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .custom-notifications {
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        max-width: none;
+    }
+}
+
+.todo-card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.action-buttons {
+    white-space: nowrap;
+}
